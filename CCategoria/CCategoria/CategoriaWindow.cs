@@ -18,7 +18,6 @@ namespace CCategoria
                 DbCommandHelper.AddParameter(dbCommand, "nombre", nombre);
                 dbCommand.ExecuteNonQuery();
                 Destroy();
-
             };
         }
     }

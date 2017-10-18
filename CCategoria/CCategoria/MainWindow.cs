@@ -11,7 +11,8 @@ public partial class MainWindow : Gtk.Window
     public MainWindow() : base(Gtk.WindowType.Toplevel)
     {
         Build();
-
+        Title = "Categoria";
+        deleteAction.Sensitive = false;
 
         App.Instance.Connection = new MySqlConnection("server=localhost;database=dbprueba;user=root;password=sistemas");
         App.Instance.Connection.Open();
@@ -25,18 +26,45 @@ public partial class MainWindow : Gtk.Window
 
         fillListStore(listStore);
 
+        treeView.Selection.Changed += delegate {
+            bool hasSelected = treeView.Selection.CountSelectedRows() > 0;
+            deleteAction.Sensitive = hasSelected;
+            //if (treeView.Selection.CountSelectedRows() > 0)
+            //    deleteAction.Sensitive = true;
+            //else
+                //deleteAction.Sensitive = false;
+        };
+
         newAction.Activated += delegate {
             new CategoriaWindow();
         };
 
         refreshAction.Activated += delegate {
-            listStore.Clear();
             fillListStore(listStore);
+        };
+
+        deleteAction.Activated += delegate {
+            if (WindowHelper.Confirm(this, "¿Quieres eliminar el registro?")) {
+                object id = getId();
+                IDbCommand dbCommand = App.Instance.Connection.CreateCommand();
+                dbCommand.CommandText = "delete from categoria where id= @id";
+                DbCommandHelper.AddParameter(dbCommand, "id", id);
+                dbCommand.ExecuteNonQuery();
+            }
 
         };
     }
+    
+    private object getId() {
+		TreeIter treeIter;
+		treeView.Selection.GetSelected(out treeIter);
+        return treeView.Model.GetValue(treeIter, 0);
+    }
+
+
 
     private void fillListStore(ListStore listStore){
+        listStore.Clear();
 		IDbCommand dbCommand = App.Instance.Connection.CreateCommand();
 		dbCommand.CommandText = "select * from categoria order by id";
 		IDataReader dataReader = dbCommand.ExecuteReader();
