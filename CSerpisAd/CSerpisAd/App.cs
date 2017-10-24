@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Data;
 
-namespace CCategoria
+namespace Serpis.Ad
 {
     public class App
     {
         private IDbConnection connection;
-        public App()
+        private App()
         {
-        }
-
-        static App() { 
         }
 
 		private static App instance = new App();

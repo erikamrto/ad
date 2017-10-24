@@ -3,6 +3,7 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Data;
 
+using Serpis.Ad;
 using CCategoria;
 
 public partial class MainWindow : Gtk.Window
@@ -13,6 +14,7 @@ public partial class MainWindow : Gtk.Window
         Build();
         Title = "Categoria";
         deleteAction.Sensitive = false;
+        editAction.Sensitive = false;
 
         App.Instance.Connection = new MySqlConnection("server=localhost;database=dbprueba;user=root;password=sistemas");
         App.Instance.Connection.Open();
@@ -29,6 +31,7 @@ public partial class MainWindow : Gtk.Window
         treeView.Selection.Changed += delegate {
             bool hasSelected = treeView.Selection.CountSelectedRows() > 0;
             deleteAction.Sensitive = hasSelected;
+            editAction.Sensitive = hasSelected;
             //if (treeView.Selection.CountSelectedRows() > 0)
             //    deleteAction.Sensitive = true;
             //else
@@ -38,6 +41,14 @@ public partial class MainWindow : Gtk.Window
         newAction.Activated += delegate {
             new CategoriaWindow();
         };
+
+        editAction.Activated += delegate
+        {
+            object id = getId();
+            new CategoriaWindow(id);
+        };
+
+
 
         refreshAction.Activated += delegate {
             fillListStore(listStore);

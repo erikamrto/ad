@@ -5,6 +5,7 @@
   </configuration>
   <import>
     <widget-library name="../bin/Debug/CCategoria.exe" internal="true" />
+    <widget-library name="../../../CSerpisAd/CSerpisAd/bin/Debug/CSerpisAd.dll" />
   </import>
   <widget class="Gtk.Window" id="MainWindow" design-size="399 300">
     <action-group name="Default">
@@ -28,6 +29,11 @@
         <property name="Label" translatable="yes" />
         <property name="StockId">gtk-delete</property>
       </action>
+      <action id="editAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes" />
+        <property name="StockId">gtk-edit</property>
+      </action>
     </action-group>
     <property name="MemberName" />
     <property name="Title" translatable="yes">MainWindow</property>
@@ -46,6 +52,7 @@
               <node type="Toolitem" action="refreshAction" />
               <node type="Separator" />
               <node type="Toolitem" action="deleteAction" />
+              <node type="Toolitem" action="editAction" />
             </node>
           </widget>
           <packing>
