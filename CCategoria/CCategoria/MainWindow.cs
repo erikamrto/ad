@@ -6,11 +6,9 @@ using System.Data;
 using Serpis.Ad;
 using CCategoria;
 
-public partial class MainWindow : Gtk.Window
-{
+public partial class MainWindow : Gtk.Window {
     
-    public MainWindow() : base(Gtk.WindowType.Toplevel)
-    {
+    public MainWindow() : base(Gtk.WindowType.Toplevel) {
         Build();
         Title = "Categoria";
         deleteAction.Sensitive = false;
@@ -42,26 +40,18 @@ public partial class MainWindow : Gtk.Window
             new CategoriaWindow();
         };
 
-        editAction.Activated += delegate
-        {
+        editAction.Activated += delegate {
             object id = getId();
             new CategoriaWindow(id);
         };
-
-
 
         refreshAction.Activated += delegate {
             fillListStore(listStore);
         };
 
         deleteAction.Activated += delegate {
-            if (WindowHelper.Confirm(this, "¿Quieres eliminar el registro?")) {
-                object id = getId();
-                IDbCommand dbCommand = App.Instance.Connection.CreateCommand();
-                dbCommand.CommandText = "delete from categoria where id= @id";
-                DbCommandHelper.AddParameter(dbCommand, "id", id);
-                dbCommand.ExecuteNonQuery();
-            }
+            object id = getId();
+            CategoriaDao.Delete(id);
 
         };
     }
