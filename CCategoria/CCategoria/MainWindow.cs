@@ -49,10 +49,12 @@ public partial class MainWindow : Gtk.Window {
             fillListStore(listStore);
         };
 
-        deleteAction.Activated += delegate {
-            object id = getId();
-            CategoriaDao.Delete(id);
-
+        deleteAction.Activated += delegate
+        {
+            if (WindowHelper.Confirm(this, "¿Quieres eleminar el registro")) {
+                object id = getId();
+                CategoriaDao.Delete(id);
+            }
         };
     }
     
