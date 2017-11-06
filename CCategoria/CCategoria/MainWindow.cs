@@ -7,7 +7,8 @@ using Serpis.Ad;
 using CCategoria;
 
 public partial class MainWindow : Gtk.Window {
-    
+
+
     public MainWindow() : base(Gtk.WindowType.Toplevel) {
         Build();
         Title = "Categoria";
@@ -17,14 +18,7 @@ public partial class MainWindow : Gtk.Window {
         App.Instance.Connection = new MySqlConnection("server=localhost;database=dbprueba;user=root;password=sistemas");
         App.Instance.Connection.Open();
 
-
-
-        treeView.AppendColumn("id", new CellRendererText(), "text", 0);
-        treeView.AppendColumn("nombre", new CellRendererText(), "text", 1);
-        ListStore listStore = new ListStore(typeof(ulong), typeof(string));
-        treeView.Model = listStore;
-
-        fillListStore(listStore);
+        TreeViewHelper.Fill(treeView, CategoriaDao.SelectAll);
 
         treeView.Selection.Changed += delegate {
             bool hasSelected = treeView.Selection.CountSelectedRows() > 0;
@@ -48,11 +42,10 @@ public partial class MainWindow : Gtk.Window {
         };
 
         refreshAction.Activated += delegate {
-            fillListStore(listStore);
+            TreeViewHelper.Fill(treeView, CategoriaDao.SelectAll);
         };
 
-        deleteAction.Activated += delegate
-        {
+        deleteAction.Activated += delegate {
             if (WindowHelper.Confirm(this, "¿Quieres eleminar el registro")) {
                 object id = getId();
                 CategoriaDao.Delete(id);
@@ -64,18 +57,6 @@ public partial class MainWindow : Gtk.Window {
 		TreeIter treeIter;
 		treeView.Selection.GetSelected(out treeIter);
         return treeView.Model.GetValue(treeIter, 0);
-    }
-
-
-
-    private void fillListStore(ListStore listStore){
-        listStore.Clear();
-		IDbCommand dbCommand = App.Instance.Connection.CreateCommand();
-		dbCommand.CommandText = "select * from categoria order by id";
-		IDataReader dataReader = dbCommand.ExecuteReader();
-		while (dataReader.Read())
-			listStore.AppendValues(dataReader["id"], dataReader["nombre"]);
-		dataReader.Close();
     }
 
         protected void OnDeleteEvent(object sender, DeleteEventArgs a) {

@@ -51,8 +51,8 @@
               <node type="Separator" />
               <node type="Toolitem" action="refreshAction" />
               <node type="Separator" />
-              <node type="Toolitem" action="deleteAction" />
               <node type="Toolitem" action="editAction" />
+              <node type="Toolitem" action="deleteAction" />
             </node>
           </widget>
           <packing>

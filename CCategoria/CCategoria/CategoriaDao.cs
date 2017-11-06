@@ -6,6 +6,7 @@ using Serpis.Ad;
 namespace CCategoria {
     public class CategoriaDao {
 
+        public const string SelectAll = "select * from categoria order by id";
         public static Categoria Load(object id) {
 			IDbCommand dbCommand = App.Instance.Connection.CreateCommand();
 			dbCommand.CommandText = "select * from categoria where id = @id";

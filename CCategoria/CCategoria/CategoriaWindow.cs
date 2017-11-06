@@ -8,7 +8,8 @@ namespace CCategoria {
 
         public CategoriaWindow(Categoria categoria) : base(Gtk.WindowType.Toplevel) {
             this.Build();
-            entryNombre.Text = categoria.Nombre ?? "";
+            entryNombre.Text = categoria.Nombre;
+           
 
             saveAction.Activated += delegate {
                 categoria.Nombre = entryNombre.Text;
