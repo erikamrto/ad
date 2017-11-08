@@ -8,7 +8,6 @@ using CCategoria;
 
 public partial class MainWindow : Gtk.Window {
 
-
     public MainWindow() : base(Gtk.WindowType.Toplevel) {
         Build();
         Title = "Categoria";
@@ -46,9 +45,9 @@ public partial class MainWindow : Gtk.Window {
         };
 
         deleteAction.Activated += delegate {
-            if (WindowHelper.Confirm(this, "¿Quieres eleminar el registro")) {
-               // object id = getId();
-               // CategoriaDao.Delete(id);
+            if (WindowHelper.Confirm(this, "¿Quieres eliminar el registro?")) {
+                object id = TreeViewHelper.getId(treeView);
+                CategoriaDao.Delete(id);
             }
         };
     }

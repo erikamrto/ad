@@ -2,11 +2,9 @@
 using Gtk;
 using System.Data;
 
-namespace Serpis.Ad
-{
-    public class TreeViewHelper
-    {
-        private static void init(TreeView treeView, IDataReader dataReader){
+namespace Serpis.Ad {
+    public class TreeViewHelper {
+        private static void init(TreeView treeView, IDataReader dataReader) {
             if (treeView.Model != null)
                 return;
 			int fieldCount = dataReader.FieldCount;
@@ -21,7 +19,7 @@ namespace Serpis.Ad
 				treeView.Model = listStore;
         }
 
-        private static void fillListStore(ListStore listStore, IDataReader dataReader){
+        private static void fillListStore(ListStore listStore, IDataReader dataReader) {
             listStore.Clear();
             int fieldCount = dataReader.FieldCount;
 			while (dataReader.Read()) {
