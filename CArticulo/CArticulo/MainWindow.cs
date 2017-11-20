@@ -23,10 +23,6 @@ public partial class MainWindow : Gtk.Window {
 			bool hasSelected = treeView.Selection.CountSelectedRows() > 0;
 			deleteAction.Sensitive = hasSelected;
 			editAction.Sensitive = hasSelected;
-			//if (treeView.Selection.CountSelectedRows() > 0)
-			//    deleteAction.Sensitive = true;
-			//else
-			    //deleteAction.Sensitive = false;
 		};
 
 		newAction.Activated += delegate {
@@ -48,7 +44,7 @@ public partial class MainWindow : Gtk.Window {
 			if (WindowHelper.Confirm(this, "¿Quieres eliminar el registro?"))
 			{
 				object id = TreeViewHelper.getId(treeView);
-				ArticuloDao.Delete(id);
+				ArticuloDao.delete(id);
 			}
 		};
     }

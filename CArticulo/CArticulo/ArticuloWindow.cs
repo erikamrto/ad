@@ -11,10 +11,12 @@ namespace CArticulo
 			this.Build();
 			entryNombre.Text = articulo.Nombre;
             spinbuttonPrecio.Value = (double)articulo.Precio;
+            entryCategoria.Text = articulo.Categoria.ToString();
          
 			saveAction.Activated += delegate {
 				articulo.Nombre = entryNombre.Text;
                 articulo.Precio = (decimal)spinbuttonPrecio.Value;
+                articulo.Categoria = long.Parse(entryCategoria.Text);
 				ArticuloDao.Save(articulo);
 				Destroy();
 			};
