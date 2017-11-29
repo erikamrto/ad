@@ -29,4 +29,7 @@ public class PruebaMySql {
 	      stp.close();
 	      connection.close();
 	}
+	public static void Listar() {
+		
+	}
 }
