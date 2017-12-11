@@ -45,4 +45,17 @@ public class Menu {
 			Menu();
 		}
 	}
+
+	public static void Volver() throws SQLException {
+		Scanner tcl = new Scanner(System.in); 
+		System.out.println("¿Quieres volver al menu? Y/N");
+		String resultado = tcl.nextLine().toLowerCase();
+		if (resultado.equals("y")) {
+			Menu.Menu();
+		}
+		else {
+			System.out.println("Programa Acabado");
+			System.exit(0);
+		}
+	}
 }
