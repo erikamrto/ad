@@ -17,12 +17,13 @@ public class Menu {
 
 		try {
 
-			System.out.println("Elige una opción: ");
+			System.out.print("Elige una opción: ");
 			n = tcl.nextInt();
 
 			switch (n) {
 			case 0:
-				System.out.println("Salir");
+				System.out.println("Programa Acabado");
+				System.exit(0);
 				break;
 			case 1:
 				ArticuloDao.Nuevo();

@@ -15,15 +15,16 @@ public class ArticuloDao {
 		Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/dbprueba", "root", "sistemas");
 		Statement stp = connection.createStatement();
 		Scanner tcl = new Scanner(System.in);
-		System.out.println("Introduce un Nombre: ");
+		System.out.print("Introduce un Nombre: ");
 		String nombre = tcl.nextLine();
-		System.out.println("Introduce un Categoria: ");
-		String categoria = tcl.nextLine();
-		System.out.println("Introduce un Precio: ");
-		String precio = tcl.nextLine();
-		String sql = "INSERT INTO articulo (nombre, categoria, precio) VALUES ('" + nombre + "', '" + categoria + "', '"
-				+ precio + "')";
-		PreparedStatement pst = connection.prepareStatement(sql);
+		System.out.print("Introduce una Categoria: ");
+		long categoria = tcl.nextLong();
+		System.out.print("Introduce un Precio: ");
+		BigDecimal precio = tcl.nextBigDecimal();
+		PreparedStatement pst = connection.prepareStatement("INSERT INTO articulo (nombre, categoria, precio) VALUES (?, ?, ?)");
+		pst.setString(1,nombre);
+		pst.setLong(2,categoria);
+		pst.setBigDecimal(3,precio);
 		pst.executeUpdate();
 		pst.close();
 		connection.close();
@@ -53,57 +54,61 @@ public class ArticuloDao {
 		String editar = tcl.nextLine().toLowerCase();
 
 		if (editar.equals("nombre")) {
+			PreparedStatement pst = connection.prepareStatement("UPDATE articulo SET nombre = ? WHERE id = ?");
 			System.out.println("Introduzca el nombre: ");
 			String newN = tcl.nextLine();
-			String entryN = "UPDATE articulo SET nombre = '" + newN + "' WHERE id = " + id;
-			PreparedStatement pst = connection.prepareStatement(entryN);
+			pst.setString(1,newN);
+			pst.setLong(2,id);
 			pst.executeUpdate();
 			pst.close();
 			System.out.println("Dato actualizado.");
 
 		} else if (editar.equals("categoria")) {
+			PreparedStatement pst = connection.prepareStatement("UPDATE articulo SET categoria = ? WHERE id = ? ");
 			System.out.println("Introduzca la Categoria: ");
 			String newC = tcl.nextLine();
-			String entryC = "UPDATE articulo SET categoria = '" + newC + "' WHERE id = " + id;
-			PreparedStatement pst = connection.prepareStatement(entryC);
+			pst.setString(1,newC);
+			pst.setLong(2,id);
 			pst.executeUpdate();
 			pst.close();
 			System.out.println("Dato actualizado.");
 
 		} else if (editar.equals("precio")) {
+			PreparedStatement pst = connection.prepareStatement("UPDATE articulo SET precio = ? WHERE id = ?");
 			System.out.println("Introduzca la Precio: ");
 			String newP = tcl.nextLine();
-			String entryP = "UPDATE articulo SET precio = '" + newP + "' WHERE id = " + id;
-			PreparedStatement pst = connection.prepareStatement(entryP);
+			pst.setString(1,newP);
+			pst.setLong(2,id);
 			pst.executeUpdate();
 			pst.close();
 			System.out.println("Dato actualizado.");
 		}
 		Listar();
-		Menu.Volver();
 		rs.close();
 		stp.close();
 		connection.close();
+		Menu.Volver();
 	}
 
 	public static void Eliminar() throws SQLException {
 		Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/dbprueba", "root", "sistemas");
-		Statement stp = connection.createStatement();
 
 		Scanner tcl = new Scanner(System.in);
 		System.out.println("Introduce el numero de la id para eliminar: ");
 		long id = tcl.nextLong();
-		String sql = "DELETE FROM articulo where ID = ?";
+		 {
+			PreparedStatement pst = connection.prepareStatement("DELETE FROM articulo where ID = ?");
 
-		PreparedStatement pst = connection.prepareStatement(sql);
+			pst.setLong(1, id);
+			pst.executeUpdate();
 
-		pst.setLong(1, id);
-		pst.executeUpdate();
+			System.out.println("Dato eliminado.");
+		}
 
-		System.out.println("Dato eliminado.");
-		Menu.Volver();
-		stp.close();
+		
+		Listar();
 		connection.close();
+		Menu.Volver();
 	}
 
 	public static void Consultar() throws SQLException {
@@ -120,7 +125,8 @@ public class ArticuloDao {
 			BigDecimal precio = rs.getBigDecimal("precio");
 			long categoria = rs.getLong("categoria");
 			System.out.println(
-					"ID: " + id + " nombre: " + nombre + " 		categoria: " + categoria + " 		precio: " + precio);
+					"ID: " + id + " 	nombre: " + nombre + " 	categoria: " + categoria 
+					+ " 		precio: " + precio);
 		}
 		Menu.Volver();
 		rs.close();
@@ -139,7 +145,7 @@ public class ArticuloDao {
 			String nombre = rs.getString("nombre");
 			BigDecimal precio = rs.getBigDecimal("precio");
 			long categoria = rs.getLong("categoria");
-			System.out.println("ID: " + id + " 	nombre: " + nombre + " 		categoria: " + categoria
+			System.out.println("ID: " + id + " 		nombre: " + nombre + " 		categoria: " + categoria
 					+ " 		precio: " + precio);
 		}
 		Menu.Volver();
