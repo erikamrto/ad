@@ -15,15 +15,15 @@ private static EntityManagerFactory entityManagerFactory;
 		entityManagerFactory =
 				Persistence.createEntityManagerFactory("serpis.ad.gventa");
 		
-		showCategorias();
-		showArticulos();
-		showCliente();
-		
-		
-		
+		//showCategorias();
+		//showArticulos();
 		//showCliente();
+		showPedidos();
+		
+		
+
 		//newPedido();
-		//showPedidos();
+
 		
 		entityManagerFactory.close();
 		
@@ -60,15 +60,15 @@ private static EntityManagerFactory entityManagerFactory;
 	entityManager.getTransaction().commit();
 	}
 	
-	/*private static void showPedidos() {
+	private static void showPedidos() {
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		entityManager.getTransaction().begin();
-		List<Categoria> categorias = entityManager
-				.createQuery("from pedido order by id", Categoria.class).getResultList();
-		for (Categoria categoria : categorias)
-			System.out.println(categoria);
+		List<Pedido> pedidos = entityManager
+				.createQuery("from Pedido order by id", Pedido.class).getResultList();
+		for (Pedido pedido : pedidos)
+			System.out.println(pedido);
 		entityManager.getTransaction().commit();
-	} */
+	} 
 	
 	/*
 	private static void newPedido() {
