@@ -3,6 +3,9 @@ package serpis.ad;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 
@@ -16,13 +19,14 @@ private static EntityManagerFactory entityManagerFactory;
 				Persistence.createEntityManagerFactory("serpis.ad.gventa");
 		
 		//showCategorias();
-		//showArticulos();
+		showArticulos();
 		//showCliente();
-		showPedidos();
+		//showPedidos();
 		
 		
 
 		//newPedido();
+		newArticulo();
 
 		
 		entityManagerFactory.close();
@@ -44,20 +48,33 @@ private static EntityManagerFactory entityManagerFactory;
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		entityManager.getTransaction().begin();
 		List<Articulo> articulos= entityManager
-				.createQuery("from Articulo order by id", Articulo.class).getResultList();
+				.createQuery("from Articulo order by id", Articulo.class)
+				.getResultList();
 		for (Articulo articulo: articulos)
 			System.out.println(articulo);
 		entityManager.getTransaction().commit();
 	}
 	
+	private static void newArticulo() {
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		entityManager.getTransaction().begin();
+		Categoria categoria = entityManager.getReference(Categoria.class, 1L);
+		Articulo articulo = new Articulo();
+		articulo.setNombre("nuevo " + new Date());
+		articulo.setPrecio(new BigDecimal(6));
+		articulo.setCategoria(categoria);
+		entityManager.persist(articulo);
+		entityManager.getTransaction().commit();
+	}
+	
 	private static void showCliente() {
-	EntityManager entityManager = entityManagerFactory.createEntityManager();
-	entityManager.getTransaction().begin();
-	List<Cliente> clientes = entityManager
-			.createQuery("from Cliente order by id", Cliente.class).getResultList();
-	for (Cliente cliente: clientes)
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		entityManager.getTransaction().begin();
+		List<Cliente> clientes = entityManager
+				.createQuery("from Cliente order by id", Cliente.class).getResultList();
+		for (Cliente cliente: clientes)
 		System.out.println(cliente);
-	entityManager.getTransaction().commit();
+		entityManager.getTransaction().commit();
 	}
 	
 	private static void showPedidos() {
