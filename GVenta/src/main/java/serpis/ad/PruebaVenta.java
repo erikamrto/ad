@@ -19,14 +19,15 @@ private static EntityManagerFactory entityManagerFactory;
 				Persistence.createEntityManagerFactory("serpis.ad.gventa");
 		
 		//showCategorias();
-		showArticulos();
+		//showArticulos();
 		//showCliente();
 		//showPedidos();
 		
 		
 
-		//newPedido();
-		newArticulo();
+		newPedido();
+		showPedidos();
+		//newArticulo();
 
 		
 		entityManagerFactory.close();
@@ -87,15 +88,22 @@ private static EntityManagerFactory entityManagerFactory;
 		entityManager.getTransaction().commit();
 	} 
 	
-	/*
 	private static void newPedido() {
-		System.out.println("Creando pedido nuevo ");
-		Pedido pedido = new Pedido();
-		pedido.setFecha(new Date());
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		entityManager.getTransaction().begin();
+		
+		Pedido pedido = new Pedido();
+		Cliente cliente = entityManager.getReference(Cliente.class, 1L);
+		pedido.setCliente(cliente);
+		PedidoLinea pedidoLinea1 = new PedidoLinea();
+		//0j0 las dos sentencias siguientes mantienen sincronizada la asosación
+		pedido.getPedidoLineas().add(pedidoLinea1);
+		pedidoLinea1.setPedido(pedido);
+		Articulo articulo = entityManager.getReference(Articulo.class, 1L);
+		pedidoLinea1.setArticulo(articulo);
+		
+		
 		entityManager.persist(pedido);
-		System.out.println("Creada " + pedido);
 		entityManager.getTransaction().commit();
-	}*/
+	}
 }
