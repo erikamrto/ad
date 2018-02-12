@@ -1,5 +1,4 @@
 package serpis.ad.clases;
-// Generated 15-ene-2018 11:51:42 by Hibernate Tools 4.3.1
 
 import java.math.BigDecimal;
 import javax.persistence.Column;
@@ -62,21 +61,20 @@ public class Pedidolinea implements java.io.Serializable {
 		this.articulo = articulo;
 		precio = articulo.getPrecio();
 		unidades = new BigDecimal(1);
-		//importe = unidades.multiply(precio);
+		// importe = unidades.multiply(precio);
 
 	}
-	
+
 	public void setUnidades(BigDecimal unidades) {
 		this.unidades = unidades;
-		//importe= unidades.multiply(precio);
-		
+		// importe= unidades.multiply(precio);
+
 	}
 
 	public void setPrecio(BigDecimal precio) {
-		this.precio=precio;
-		importe= unidades.multiply(precio);
+		this.precio = precio;
+		importe = unidades.multiply(precio);
 	}
-	
 
 	@ManyToOne
 	@JoinColumn(name = "pedido", nullable = false)
@@ -101,17 +99,17 @@ public class Pedidolinea implements java.io.Serializable {
 	@Column(name = "importe", precision = 10)
 	public BigDecimal getImporte() {
 		return unidades.multiply(precio);
-		//return this.importe;
+		// return this.importe;
 	}
 
-	  public void setImporte(BigDecimal importe) {
-	        this.importe = importe;
+	public void setImporte(BigDecimal importe) {
+		this.importe = importe;
 	}
+
 	@PrePersist
 	private void PrePersist() {
-		importe= unidades.multiply(precio);
+		importe = unidades.multiply(precio);
 	}
-
 
 	@Override
 	public String toString() {

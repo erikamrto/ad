@@ -18,16 +18,14 @@ import serpis.ad.clases.Cliente;
 import serpis.ad.clases.Pedido;
 import serpis.ad.clases.Pedidolinea;
 
-public class ventaDao {
-	
-	
-	private static EntityManagerFactory entityManagerFactory ;
-	
-	
+public class VentaDao {
+
+	private static EntityManagerFactory entityManagerFactory;
+
 	public static void init(EntityManagerFactory entityManagerFactory) {
-				ventaDao.entityManagerFactory = entityManagerFactory;
-		}
-	
+		VentaDao.entityManagerFactory = entityManagerFactory;
+	}
+
 	public static void showCategoria() {
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		entityManager.getTransaction().begin();
@@ -86,9 +84,7 @@ public class ventaDao {
 
 		entityManager.getTransaction().commit();
 
-		
 	}
-
 
 	public static void newCategoria(int numero) throws MySQLIntegrityConstraintViolationException {
 		System.out.println("creando categoria nueva");
@@ -101,37 +97,36 @@ public class ventaDao {
 		entityManager.getTransaction().commit();
 
 	}
-	
-	protected static void newPedido ( String idcliente){
 
-			EntityManager entityManager = entityManagerFactory.createEntityManager();
-			entityManager.getTransaction().begin();
-			Pedido pedido = new Pedido();
-			Cliente cliente = entityManager.getReference(Cliente.class, Long.parseLong(idcliente));
-			pedido.setCliente(cliente);
-			Calendar calendar = Calendar.getInstance();
-			pedido.setFecha(calendar);
-			pedido.getImporte();
-			entityManager.persist(pedido);	
-			entityManager.getTransaction().commit();
-			
-		}
-	
-	/*public static void newArticulo(int numero) throws MySQLIntegrityConstraintViolationException {
-		System.out.println("creando Articulo nueva");
-		Articulo Articulo = new Articulo();
-		Articulo.setCategoria(categoria);
-		Articulo.setNombre("Articulo " + numero);
-		Articulo.setPrecio(precio);
-		
+	protected static void newPedido(String idcliente) {
+
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		entityManager.getTransaction().begin();
-		// System.out.println("Creando "+ Articulo);
-		entityManager.persist(Articulo);
-		System.out.println("Creada " + Articulo);
+		Pedido pedido = new Pedido();
+		Cliente cliente = entityManager.getReference(Cliente.class, Long.parseLong(idcliente));
+		pedido.setCliente(cliente);
+		Calendar calendar = Calendar.getInstance();
+		pedido.setFecha(calendar);
+		pedido.getImporte();
+		entityManager.persist(pedido);
 		entityManager.getTransaction().commit();
 
-	}*/
+	}
+
+	/*
+	 * public static void newArticulo(int numero) throws
+	 * MySQLIntegrityConstraintViolationException {
+	 * System.out.println("creando Articulo nueva"); Articulo Articulo = new
+	 * Articulo(); Articulo.setCategoria(categoria); Articulo.setNombre("Articulo "
+	 * + numero); Articulo.setPrecio(precio);
+	 * 
+	 * EntityManager entityManager = entityManagerFactory.createEntityManager();
+	 * entityManager.getTransaction().begin(); // System.out.println("Creando "+
+	 * Articulo); entityManager.persist(Articulo); System.out.println("Creada " +
+	 * Articulo); entityManager.getTransaction().commit();
+	 * 
+	 * }
+	 */
 	public static void newCliente(int numero) throws MySQLIntegrityConstraintViolationException {
 		System.out.println("creando Cliente nueva");
 		Cliente cliente = new Cliente();
@@ -144,45 +139,43 @@ public class ventaDao {
 		entityManager.getTransaction().commit();
 
 	}
-	
-	
+
 	public static void newPedido() throws MySQLIntegrityConstraintViolationException {
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		entityManager.getTransaction().begin();
-		
+
 		Pedido pedido = new Pedido();
-		Cliente cliente=entityManager.getReference(Cliente.class, 1L);
+		Cliente cliente = entityManager.getReference(Cliente.class, 1L);
 		pedido.setCliente(cliente);
-		Pedidolinea pedidoLinea1= new Pedidolinea();
-		//Ojo las dos sentencias siguiente mantienen sincronizada la asociación 
-		//pedido.getPedidolineas().add(pedidoLinea1);
-		//pedidoLinea1.setPedido(pedido);
+		Pedidolinea pedidoLinea1 = new Pedidolinea();
+		// Ojo las dos sentencias siguiente mantienen sincronizada la asociación
+		// pedido.getPedidolineas().add(pedidoLinea1);
+		// pedidoLinea1.setPedido(pedido);
 		pedido.add(pedidoLinea1);
 		Articulo articulo = entityManager.getReference(Articulo.class, 1L);
 		pedidoLinea1.setArticulo(articulo);
-		
-		//entityManager.persist(pedido);
-		//entityManager.getTransaction().commit();
-		
+
+		// entityManager.persist(pedido);
+		// entityManager.getTransaction().commit();
+
 		for (Pedidolinea pedidolinea : pedido.getPedidolineas())
 			System.out.println(pedidolinea);
 
 	}
 
-	
 	/*
-	public static void newPedidolinea(int numero) throws MySQLIntegrityConstraintViolationException {
-		System.out.println("creando Pedidolinea nueva");
-		Pedidolinea Pedidolinea = new Pedidolinea();
-		Pedidolinea.setNombre("Pedidolinea " + numero);
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
-		entityManager.getTransaction().begin();
-		// System.out.println("Creando "+ Pedidolinea);
-		entityManager.persist(Pedidolinea);
-		System.out.println("Creada " + Pedidolinea);
-		entityManager.getTransaction().commit();
-
-	}*/
+	 * public static void newPedidolinea(int numero) throws
+	 * MySQLIntegrityConstraintViolationException {
+	 * System.out.println("creando Pedidolinea nueva"); Pedidolinea Pedidolinea =
+	 * new Pedidolinea(); Pedidolinea.setNombre("Pedidolinea " + numero);
+	 * EntityManager entityManager = entityManagerFactory.createEntityManager();
+	 * entityManager.getTransaction().begin(); // System.out.println("Creando "+
+	 * Pedidolinea); entityManager.persist(Pedidolinea);
+	 * System.out.println("Creada " + Pedidolinea);
+	 * entityManager.getTransaction().commit();
+	 * 
+	 * }
+	 */
 
 	public static void close() {
 		entityManagerFactory.close();
